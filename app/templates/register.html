@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='register.css') }}">
+</head>
+<body>
+<form onsubmit="CadastrarUsuario(event)">
+    <label for="nome">Nome completo:</label><br>
+    <input type="text" id="nome" name="nome" required><br><br>
+
+    <label for="telefone">Número de telefone:</label><br>
+    <input type="number" id="telefone" name="telefone" required><br><br>
+
+    <label for="senha">Senha:</label><br>
+    <input type="password" id="senha" name="senha" required><br><br>
+
+    <label for="confirmar_senha">Confirmar Senha:</label><br>
+    <input type="password" id="confirmar_senha" name="confirmar_senha" required><br><br>
+    
+    <div class="form-group">
+      <label for="classe">Disciplina:</label>
+      <select id="classe" name="classe" required>
+        <option value="10">10ª classe</option>
+        <option value="11">11ª classe</option>
+        <option value="12">12ª classe</option>
+      </select>
+    </div><br>
+    
+    <div class="input-session">
+      <label for="sessao">Sessão:</label>
+      <select id="sessao" name="sessao" required>
+        <option value="TUDO">Todas as disciplinas</option>
+        <option value="CB">Ciências com Biologia</option>
+        <option value="CG">Ciências com Geografia</option>
+        <option value="CD">Ciências com Desenho</option>
+        <option value="LT">Letras</option>
+      </select>
+    </div><br>
+
+    <button type="submit">Registrar</button>
+</form>
+
+<p>Já tem conta? <a href="{{ url_for('login') }}">Entrar</a></p>
+
+<script src="{{ url_for('static', filename='register.js') }}"></script>
+</body>
+</html>

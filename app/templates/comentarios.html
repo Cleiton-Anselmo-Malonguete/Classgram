@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Comentários</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <script src="https://kit.fontawesome.com/SEU_ID_DO_FONT_AWESOME.js" crossorigin="anonymous"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #fff;
+            color: #222;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding: env(safe-area-inset);
+            overflow-y: auto;
+        }
+
+        .postagem {
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 12px;
+            margin: 12px auto;
+            max-width: 600px;
+            width: 95%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .cabecalho-postagem {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .foto-perfil {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .conteudo-postagem {
+            margin: 12px 0;
+            font-size: 15px;
+            line-height: 1.4;
+        }
+
+        .reacoes {
+            font-size: 13px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .acoes-postagem {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+        }
+
+        .acoes-postagem button {
+            background: none;
+            border: none;
+            color: #555;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .acoes-postagem button:hover {
+            color: #1877f2;
+        }
+
+        .comentarios {
+            padding: 0 10px;
+            margin-bottom: 120px;
+        }
+
+        .comentario {
+            background: #f4f4f4;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 8px;
+            box-shadow: 1px 1px 5px #ccc;
+        }
+
+        .form-comentario {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: #fff;
+            padding: 10px;
+            box-shadow: 0 -2px 6px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+
+        .form-comentario textarea {
+            width: 100%;
+            height: 60px;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            resize: none;
+            font-size: 14px;
+        }
+        strong{
+          font-size: 1rem;
+        }
+        p{
+          font-size: 1.5rem;
+        }
+
+        .form-comentario button {
+            margin-top: 8px;
+            width: 100%;
+            padding: 10px;
+            background-color: royalblue;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        @media (min-width: 768px) {
+            .form-comentario {
+                width: 600px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="postagem">
+        <div class="cabecalho-postagem">
+            <img class="foto-perfil" src="/static/assets/avatar.png" alt="Foto do usuário">
+            <div>
+                <strong>{{ postagem[3] }}</strong><br>
+                <small>{{ postagem[2] }} • <i class="fas fa-users"></i></small>
+            </div>
+        </div>
+
+        <div class="conteudo-postagem">
+            <p>{{ postagem[1] }}</p>
+        </div>
+
+        <div class="reacoes">
+            <i class="fas fa-thumbs-up" style="color:blue;"></i> {{ curtidas }} curtidas
+        </div>
+
+        <div class="acoes-postagem">
+            <button><i class="far fa-thumbs-up"></i> Gosto</button>
+            <button><i class="far fa-comment"></i> Comentar</button>
+            <button><i class="fas fa-share"></i> Partilhar</button>
+        </div>
+    </div>
+
+    <div class="comentarios">
+        <h3>Comentários:</h3>
+        {% for c in comentarios %}
+            <div class="comentario">
+                <strong>{{ c[2] }}</strong> <small>{{ c[1] }}</small><br>
+                <p>{{ c[0] }}</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="form-comentario">
+        <textarea id="comentario" placeholder="Escreva seu comentário..." required></textarea>
+        <button onclick="enviarComentario({{ postagem[0] }})">Comentar</button>
+    </div>
+</body>
+<script>
+function enviarComentario(id_postagem) {
+    const texto = document.getElementById('comentario').value;
+
+    if (!texto.trim()) {
+        alert("Escreva algo antes de comentar.");
+        return;
+    }
+
+    fetch(`/comentar_ajax/${id_postagem}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ comentario: texto })
+    })
+    .then(res => res.json())
+    .then(dado => {
+        if (dado.status === "ok") {
+            const div = document.createElement('div');
+            div.className = "comentario";
+            div.innerHTML = `<strong>${dado.autor}</strong> <small>${dado.data}</small><br><p>${dado.comentario}</p>`;
+            document.querySelector('.comentarios').appendChild(div);
+            document.getElementById('comentario').value = "";
+        } else {
+            alert("Erro ao comentar.");
+        }
+    });
+}
+
+// Faz o campo de comentário subir ao focar no mobile
+document.getElementById("comentario").addEventListener("focus", () => {
+    setTimeout(() => {
+        window.scrollTo(0, document.body.scrollHeight);
+    }, 300);
+});
+</script>
+
+</html>

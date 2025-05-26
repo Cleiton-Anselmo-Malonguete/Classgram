@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Adicionar Desafio</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f2f2f2;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #0077ff;
+    }
+
+    label {
+      display: block;
+      margin-top: 12px;
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background: #0077ff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #005edb;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Adicionar Novo Desafio</h2>
+    <form action="/adicionar_desafio" method="POST">
+      <label for="titulo">Título</label>
+      <input type="text" id="titulo" name="titulo" required>
+
+      <label for="enunciado">Enunciado</label>
+      <textarea id="enunciado" name="enunciado" required></textarea>
+
+      <label for="a">Alternativa A</label>
+      <input type="text" id="a" name="alternativa_a" required>
+
+      <label for="b">Alternativa B</label>
+      <input type="text" id="b" name="alternativa_b" required>
+
+      <label for="c">Alternativa C</label>
+      <input type="text" id="c" name="alternativa_c" required>
+
+      <label for="d">Alternativa D</label>
+      <input type="text" id="d" name="alternativa_d" required>
+
+      <label for="resposta">Resposta Correta</label>
+      <select id="resposta" name="resposta_correta" required>
+        <option value="">--Selecione--</option>
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+        <option value="D">D</option>
+      </select>
+
+      <button type="submit">Salvar Desafio</button>
+    </form>
+  </div>
+
+</body>
+
+</html>

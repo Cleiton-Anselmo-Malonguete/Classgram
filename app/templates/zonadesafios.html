@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zona de Desafios</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f9f9f9;
+      display: flex;
+      justify-content: center;
+    }
+
+    .conteiner {
+      width: 100%;
+      max-width: 600px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .card {
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    .perfil {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .perfil img {
+      height: 50px;
+      width: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #0077ff;
+    }
+
+    .perfil strong {
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .perfil span {
+      font-size: 12px;
+      color: #777;
+    }
+
+    .conteudo p {
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 16px;
+      color: #333;
+    }
+
+    .alternativa {
+      display: block;
+      width: 100%;
+      margin: 8px 0;
+      padding: 12px;
+      background-color: #f0f0f0;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      text-align: left;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .alternativa:hover {
+      background-color: rgba(255, 255, 255, 0.7);
+      color:#000;
+      transform: scale(1.02);
+      cursor: pointer;
+    }
+
+    .botao-adicionar {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #0077ff;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 14px 20px;
+      font-size: 14px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      cursor: pointer;
+      z-index: 1000;
+      transition: background-color 0.3s ease;
+    }
+    .modal-comentarios {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  max-height: 60%;
+  background: white;
+  z-index: 9999;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
+  overflow-y: auto;
+}
+
+.cabecalho {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.corpo {
+  padding: 10px;
+}
+
+    .botao-adicionar:hover {
+      background-color: #005fd1;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+
+      .card {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="conteiner">
+    <div class="card">
+      <div class="perfil">
+        <img src="https://via.placeholder.com/50" alt="foto do perfil">
+        <div>
+          <strong>Nome do Usuário</strong><br>
+          <span>17:30</span>
+        </div>
+      </div>
+      <div class="conteudo">
+        <p>Qual é o resultado de 2 + 2?</p>
+        <button class="alternativa">A) 3</button>
+        <button class="alternativa">B) 4</button>
+        <button class="alternativa">C) 5</button>
+        <button class="alternativa">D) 22</button>
+      </div>
+    </div>
+  </div>
+
+  <button class="botao-adicionar" onclick="window.location.href='/adicionar_desafio'">
+    + Adicionar desafio
+  </button>
+   <div id="comentariosModal" class="modal-comentarios" style="display: none;">
+  <div class="cabecalho">
+    <span>Comentários</span>
+    <button onclick="fecharComentarios()">X</button>
+  </div>
+  <div class="corpo">
+    <p><strong>Usuário 1:</strong> Gostei desse desafio!</p>
+    <p><strong>Usuário 2:</strong> Quero tentar resolver!</p>
+    <!-- Mais comentários aqui -->
+  </div>
+</div>
+
+  <script src="{{ url_for('static', filename='zonadesafios.js') }}"></script>
+</body>
+</html>

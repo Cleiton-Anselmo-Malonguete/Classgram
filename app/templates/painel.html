@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Painel Educacional</title>
+   <link rel="stylesheet" href="{{ url_for('static', filename='painel.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+  <!-- Topo -->
+  <header class="topo">
+    <div class="logo">Classgram</div>
+    <div class="acoes">
+      <!-- No topo do seu layout (header ou navbar) -->
+    <button onclick="window.location.href='{{ url_for('criarpost') }}'">
+  <i class="fas fa-plus"></i> 
+</button>
+      <button><i class="fas fa-bell"></i></button>
+    </div>
+  </header>
+
+  <!-- Disciplinas (tipo stories) -->
+  <section class="disciplinas">
+    <div class="disciplina" onclick="irParaDesafiosDisciplinas('Matematica')">
+      <img src="{{ url_for('static', filename='assets/matematica.png') }}" alt="Matemática">
+      <span>Matemática</span>
+    </div>
+    <div class="disciplina" onclick="irParaDesafiosDisciplinas('Fisica')">
+      <img src="{{ url_for('static', filename='assets/fisica.png') }}" alt="Física">
+      <span>Física</span>
+    </div>
+  </div>
+  <div class="disciplina" onclick="irParaDesafiosDisciplinas('Quimica')">
+    <img src="{{ url_for('static', filename='assets/quimica.png') }}" alt="Química">
+    <span>Química</span>
+  </div>
+  <div class="disciplina" onclick="irParaDesafiosDisciplinas('Biologia')">
+    <img src="{{ url_for('static', filename='assets/biologia.png') }}" alt="Biologia">
+    <span>Biologia</span>
+  </div>
+  <div class="disciplina" onclick="irParaDesafiosDisciplinas('Lingua_Portuguesa')">
+    <img src="{{ url_for('static', filename='assets/portugues.png') }}" alt="Português">
+    <span>Português</span>
+  </div>
+  <div class="disciplina" onclick="irParaDesafiosDisciplinas('Historia')">
+    <img src="{{ url_for('static', filename='assets/historia.png') }}" alt="História">
+    <span>História</span>
+  </div>
+  <div class="disciplina" onclick="irParaDesafiosDisciplinas('Geografia')">
+    <img src="{{ url_for('static', filename='assets/geografia.png') }}" alt="Geografia">
+    <span>Geografia</span>
+  </div>
+  <div class="disciplina" onclick="irParaDesafiosDisciplinas('Ingles')">
+    <img src="{{ url_for('static', filename='assets/ingles.png') }}" alt="Inglês">
+    <span>Inglês</span>
+  </div>
+    <div class="disciplina" onclick="irParaDesafiosDisciplinas('Filosofia')">
+    <img src="{{ url_for('static', filename='assets/filosofia.png') }}" alt="Filosofia">
+    <span>Filosofia</span>
+  </div>
+  <div class="disciplina" onclick="irParaDesafiosDisciplinas('Frances')">
+    <img src="{{ url_for('static', filename='assets/frances.png') }}" alt="Francês">
+    <span>Francês</span>
+  </div>
+  </section>
+
+  <div id="feed"></div>
+
+  <!-- Rodapé com navegação -->
+  <footer class="menu">
+    <button><i class="fas fa-home"></i><span>Início</span></button>
+    <button onclick="irParaZonadesafios()">
+      <i class="fas fa-bolt"></i>
+      <span>Batalha de mentes</span>
+    </button>
+    <button onclick="window.location.href='/usuarios'"><i class="fas fa-user-friends"></i><span>Usuários</span></button>
+    <button onclick="window.location.href='/irperfil'"><i class="fas fa-user"></i><span>Perfil</span></button>
+    <button onclick="{{url_for('logout')}}"><i class="fas fa-right-from-bracket"></i><span>Logout</span></button>
+  </footer>
+
+</body>
+
+<script src="{{ url_for('static', filename='painel.js') }}"></script>
+</html>

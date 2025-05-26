@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-MZ">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pergunta Interativa</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to bottom right, #1e3c72, #2a5298);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      color: #fff;
+      overflow-x: hidden; /* Impede rolagem lateral */
+    }
+
+    .pergunta {
+      margin-bottom: 30px;
+      text-align: center;
+      max-width: 90vw; /* Limita a largura da pergunta */
+    }
+
+    .pergunta p {
+      font-size: 20px;
+      line-height: 1.5;
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 15px;
+      border-radius: 10px;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      white-space: normal;
+    }
+
+
+    .alternativa , #continuar{
+      margin: 10px 0;
+      max-width: 500px;
+      width: 100%;
+      padding: 15px;
+      border-radius: 25px;
+      border: none;
+      background: #ffffff;
+      color: #2a5298;
+      font-weight: bold;
+      font-size: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s, background-color 0.2s;
+      cursor: pointer;
+    }
+    
+     #continuar{
+       display: none;
+       background: #55f0fffe;
+     } 
+
+    .alternativa:hover {
+      transform: scale(1.03);
+      background-color: #dbe9ff;
+    }
+    h1{
+      margin-bottom:60px;
+    }
+  </style>
+</head>
+<body>
+  <h1 id="disciplina">{{disciplina}}</h1>
+  <div class="pergunta">
+    <p>
+      Quem é o melhor jogador do mundo
+    </p>
+  </div>
+
+    <button class="alternativa">Messi </button>
+
+    <button class="alternativa">Ronaldo</button>
+    <button class="alternativa">Yamal</button>
+    <button class="alternativa">Raphinha</button>
+    
+    <button id="continuar" onclick="carregarDesafios()">Continuar</button>
+</body>
+
+<script src="{{ url_for('static', filename='desafios_disciplina.js') }}"></script>
+</html>

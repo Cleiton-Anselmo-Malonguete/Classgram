@@ -1,0 +1,239 @@
+<!DOCTYPE html><html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil</title>
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f2f3f7;
+            margin: 0;
+            padding: 0;
+        }
+        .perfil-container {
+            background-color: white;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+        .perfil-container img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+        .perfil-container h2 {
+            margin: 0;
+        }
+        .perfil-container p {
+            color: #666;
+            margin-top: 5px;
+        }
+        .info-numeros {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        .info-numeros div {
+            text-align: center;
+        }
+        .info-numeros span {
+            font-weight: bold;
+            display: block;
+        }
+        #botao-seguir {
+            margin-top: 15px;
+            padding: 10px 20px;
+            border: none;
+            background-color: #3cb371;
+            color: white;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        #feed {
+            padding: 10px;
+        }
+        .postagem {
+            background-color: white;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            padding: 10px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.05);
+        }
+        .cabecalho-postagem {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .cabecalho-postagem img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .reacoes, .acoes-postagem {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
+        .acoes-postagem{
+          display: flex;
+          justify-content: space-around;
+        }
+        .acoes-postagem button {
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: #555;
+        }
+        .conteudo{
+          padding: 10px;
+        }
+    </style>
+</head>
+<body>
+<div id="perfil" data-telefone="{{ telefone }}"></div>
+
+<div class="perfil-container">
+    <img src="/static/assets/avatar.png" alt="Foto do perfil">
+    <h2 id="nome-usuario">Carregando...</h2>
+    <p id="classe-usuario">Carregando...</p>
+
+    <div class="info-numeros">
+        <div><span id="total-postagens">0</span> Posts</div>
+        <div><span id="total-seguidores">0</span> Seguidores</div>
+        <div><span id="pontos-usuario">0</span> Pontos</div>
+    </div>
+
+    <button id="btn-seguir" style="display:none;">Seguir</button>
+</div>
+
+<div id="feed"></div>
+
+<script>
+    let pagina = 1;
+    let carregando = false;
+    let fim = false;
+
+    async function carregarPostagensPerfil() {
+        if (carregando || fim) return;
+
+        carregando = true;
+        const feed = document.getElementById('feed');
+        try {
+            const resposta = await fetch(`/postagens/{{ telefone }}?pagina=${pagina}`);
+            if (!resposta.ok) throw new Error("Erro ao buscar postagens");
+
+            const postagens = await resposta.json();
+
+            if (postagens.length === 0) {
+                fim = true;
+                return;
+            }
+
+            postagens.forEach(post => {
+                const postagem = document.createElement('div');
+                postagem.classList.add('postagem');
+                postagem.setAttribute('data-id', post.id);
+                postagem.innerHTML = `
+                    <div class="cabecalho-postagem">
+                        <img class="foto-perfil" src="/static/assets/avatar.png" alt="Foto do usuário">
+                        <div>
+                            <strong>${post.autor}</strong><br>
+                            <small>${post.data}</small>
+                        </div>
+                    </div>
+                    <div class="conteudo-postagem">
+                        <p>${post.conteudo}</p>
+                    </div>
+                    <div class="reacoes">
+                        <i class="fas fa-thumbs-up" style="color:blue;"></i> ${post.curtidas} curtidas
+                    </div>
+                    <div class="acoes-postagem">
+                        <button onclick='Gostar(this , ${post.id})'><i class="far fa-thumbs-up"></i> Gosto</button>
+                        <button onclick="irParaComentarios(${post.id})">
+                         <i class="far fa-comment"></i> ${post.quantidade_comentarios}</button>
+                        <button><i class="fas fa-share"></i> Partilhar</button>
+                    </div>
+                    <div class="comentarios"></div>
+                `;
+                feed.appendChild(postagem);
+            });
+
+            pagina++;
+        } catch (erro) {
+            console.error("Erro ao carregar postagens do perfil", erro);
+        } finally {
+            carregando = false;
+        }
+    }
+
+    // Scroll automático
+    window.addEventListener("scroll", () => {
+        const scrollFinal = window.innerHeight + window.scrollY >= document.body.offsetHeight - 100;
+        if (scrollFinal) {
+            carregarPostagensPerfil();
+        }
+    });
+
+    // Inicialização
+    document.addEventListener("DOMContentLoaded", async () => {
+        carregarPostagensPerfil();
+
+        const perfil = document.getElementById("perfil");
+        const telefonePerfil = perfil.dataset.telefone;
+        const btnSeguir = document.getElementById("btn-seguir");
+
+        try {
+            const resposta = await fetch(`/verificar_segue/${telefonePerfil}`);
+            if (!resposta.ok) return;
+            
+            const dados = await resposta.json();
+
+            if (dados.mostrar_botao) {
+                btnSeguir.style.display = "inline-block";
+                btnSeguir.textContent = dados.segue ? "Deixar de seguir" : "Seguir";
+
+                btnSeguir.onclick = async () => {
+                    const rota = dados.segue ? "deixar_de_seguir" : "seguir";
+                    const respostaAcao = await fetch(`/${rota}/${telefonePerfil}`, { method: "POST" });
+                    if (respostaAcao.ok) {
+                        dados.segue = !dados.segue;
+                        btnSeguir.textContent = dados.segue ? "Deixar de seguir" : "Seguir";
+                    }
+                };
+            }
+        } catch (erro) {
+            console.error("Erro ao verificar se segue:", erro);
+        }
+    });
+    
+document.addEventListener("DOMContentLoaded", function () {
+    const divPerfil = document.getElementById("perfil");
+    const telefone = divPerfil.dataset.telefone;
+
+    fetch(`/perfil/${telefone}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.erro) {
+                alert("Usuário não encontrado.");
+                return;
+            }
+
+            document.getElementById("nome-usuario").textContent = data.nome;
+            document.getElementById("classe-usuario").textContent = `${data.classe}ª classe`;
+            document.getElementById("total-postagens").textContent = data.total_postagens;
+            document.getElementById("total-seguidores").textContent = data.total_seguidores;
+            document.getElementById("pontos-usuario").textContent = data.pontos;
+
+            // Aqui você pode também mostrar o botão "Seguir", se necessário
+            // document.getElementById("btn-seguir").style.display = "block";
+        })
+        .catch(err => {
+            console.error("Erro ao carregar perfil:", err);
+        });
+});
+</script>
+</html>

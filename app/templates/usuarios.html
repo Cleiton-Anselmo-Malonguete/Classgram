@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuários</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            padding: 20px;
+        }
+
+        .usuario-card {
+            background: #fff;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .usuario-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .usuario-info strong {
+            font-size: 18px;
+        }
+
+        .usuario-info span {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .btn-seguir {
+            padding: 8px 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .seguir {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .seguindo {
+            background-color: #6c757d;
+            color: #fff;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .usuario-card {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+                padding: 20px;
+            }
+
+            .usuario-info {
+                margin-bottom: 15px;
+                align-items: center;
+            }
+
+            .btn-seguir {
+                align-self: center;
+                width: 100%;
+                max-width: 200px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 8px;
+            }
+
+            .usuario-card {
+                padding: 15px;
+            }
+
+            .usuario-info strong {
+                font-size: 16px;
+            }
+
+            .usuario-info span {
+                font-size: 13px;
+            }
+
+            .btn-seguir {
+                padding: 10px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Lista de Usuários</h1>
+    <div id="lista-usuarios"></div>
+
+    <script>
+        const telefoneLogado = "{{ telefone }}";
+
+        async function carregarUsuarios() {
+            const res = await fetch("/listar_usuarios");
+            const usuarios = await res.json();
+
+            const lista = document.getElementById("lista-usuarios");
+            lista.innerHTML = "";
+
+            usuarios.forEach(usuario => {
+                const card = document.createElement("div");
+                card.className = "usuario-card";
+
+                const info = `
+                    <div class="usuario-info">
+                        <strong>${usuario.nome}</strong>
+                        <span>Classe: ${usuario.classe}</span>
+                    </div>
+                `;
+
+                const seguirBtn = document.createElement("button");
+                seguirBtn.className = "btn-seguir";
+                seguirBtn.innerText = usuario.seguindo ? "Seguindo" : "Seguir";
+                seguirBtn.classList.add(usuario.seguindo ? "seguindo" : "seguir");
+
+                seguirBtn.onclick = async () => {
+                    const res = await fetch(`/seguir/${usuario.id}`, {
+                        method: "POST"
+                    });
+
+                    if (res.ok) {
+                        usuario.seguindo = !usuario.seguindo;
+                        seguirBtn.innerText = usuario.seguindo ? "Seguindo" : "Seguir";
+                        seguirBtn.classList.toggle("seguir");
+                        seguirBtn.classList.toggle("seguindo");
+                    }
+                };
+
+                card.innerHTML = info;
+                card.appendChild(seguirBtn);
+                lista.appendChild(card);
+            });
+        }
+
+        carregarUsuarios();
+    </script>
+</body>
+</html>

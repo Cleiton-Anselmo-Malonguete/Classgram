@@ -1,0 +1,265 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Corpo e fundo */
+body {
+  background: #fff;
+  color: #222;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Topo */
+.topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fafafa;
+  padding: 10px 16px;
+  border-bottom: 1px solid #ddd;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #111;
+}
+a{
+  text-decoration: none;
+}
+
+.acoes button {
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  margin-left: 15px;
+  cursor: pointer;
+  color: #555;
+  transition: color 0.3s;
+}
+
+.acoes button:hover {
+  color: #000;
+}
+
+/* Disciplinas estilo stories */
+.disciplinas {
+  display: flex;
+  overflow-x: auto;
+  padding: 12px 10px;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+}
+
+.disciplina {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 16px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.disciplina img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ccc;
+  margin-bottom: 6px;
+}
+
+.disciplina span {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #333;
+}
+
+
+.disciplina:hover {
+  background: #ffc107;
+}
+
+/* Feed principal */
+
+.feed{
+  flex-grow: 1;
+  padding: 16px 10px;
+  max-width: 600px;
+  margin: 0 auto;
+  width: 100%;
+}
+.postagem {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 12px;
+  margin: 12px auto;
+  max-width: 500px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  font-family: sans-serif;
+}
+
+.cabecalho-postagem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.foto-perfil {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.cabecalho-postagem strong {
+  font-size: 16px;
+  color: #111;
+}
+
+.cabecalho-postagem small {
+  font-size: 12px;
+  color: #666;
+}
+
+.conteudo-postagem {
+  margin: 12px 0;
+  font-size: 15px;
+  line-height: 1.4;
+}
+.conteudo-postagem p{
+  font-size: 16px;
+}
+
+.reacoes {
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.acoes-postagem {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid #eee;
+  padding-top: 10px;
+}
+
+.acoes-postagem button {
+  background: #ffffffde;
+  border-radius: 10px;
+  padding: 3px;
+  border: none;
+  color: #555;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.acoes-postagem button:hover {
+  color: #1877f2;
+}
+/* Rodapé fixo */
+.menu {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: #fafafa;
+  border-top: 1px solid #ddd;
+  padding: 8px 0;
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+}
+
+.menu button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #555;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1rem;
+  transition: color 0.3s;
+}
+
+.menu button i {
+  font-size: 1.4rem;
+  margin-bottom: 3px;
+}
+
+.menu button:hover,
+.menu button:focus {
+  color: #000;
+}
+.comentarios {
+    margin-top: 10px;
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+}
+
+.comentario {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    background: #f5f5f5;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.comentario img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.comentario-conteudo {
+    flex: 1;
+}
+
+.comentario-conteudo strong {
+    color: #333;
+}
+
+.comentario-conteudo small {
+    display: block;
+    color: #777;
+    font-size: 12px;
+}
+
+/* Responsividade */
+@media (min-width: 700px) {
+  body {
+    background: #f0f2f5;
+  }
+  .topo {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .disciplinas {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .feed {
+    max-width: 900px;
+  }
+  .menu {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+}
